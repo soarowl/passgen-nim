@@ -125,6 +125,7 @@ when isMainModule:
       "lower": "Minimal lower case letters",
       "punction": "Minimal punction letters",
       "upper": "Minimal upper case letters",
+      "unique": "Each letter is differently",
       "D": "All letters are digital",
       "L": "All letters are lower case",
       "P": "All letters are punction",
