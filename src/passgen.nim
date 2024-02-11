@@ -9,6 +9,7 @@ proc passgen(
     lower = 1,
     punction = 1,
     upper = 1,
+    unique = false,
     D = false,
     L = false,
     P = false,
@@ -29,6 +30,7 @@ proc passgen(
 
   randomize()
   var password = newStringOfCap(length)
+  var charsets: set[char]
   while true:
     var d = 0
     var l = 0
@@ -52,6 +54,23 @@ proc passgen(
       l = 0
       p = 0
 
+    if unique:
+      if D and length > 10:
+        echo "The number of digits must be less than 10."
+        return
+
+      if L and length > 26:
+        echo "The number of lowercase letters must be less than 26."
+        return
+
+      if P and length > 26:
+        echo "The number of punctuation characters must be less than 26."
+        return
+
+      if U and length > 26:
+        echo "The number of uppercase letters must be less than 26."
+        return
+
     for i in 0 ..< length:
       block generate_letter:
         while true:
@@ -60,6 +79,10 @@ proc passgen(
             c = char(rand(ord('0') .. ord('9')))
           elif L or lower == length:
             c = char(rand(ord('a') .. ord('z')))
+          elif P or punction == length:
+            c = char(rand(33 .. 126))
+            if c >= '0' and c <= 'z':
+              continue
           elif U or upper == length:
             c = char(rand(ord('A') .. ord('Z')))
           else:
@@ -81,11 +104,14 @@ proc passgen(
             if punction == 0:
               continue
             inc(p)
-          password.add(c)
-          break generate_letter
+          if (unique and c notin charsets) or (not unique):
+            charsets.incl(c)
+            password.add(c)
+            break generate_letter
     if (d != 0 and d < digit) or (l != 0 and l < lower) or (p != 0 and p < punction) or
         (u != 0 and u < upper):
       password.setLen(0)
+      charsets = {}
     else:
       break
   echo password

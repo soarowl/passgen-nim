@@ -31,6 +31,16 @@ passgen -l 16 --lower 2 -u 3 -p 4
 passgen -l 6 -D
 ```
 
+## colorful output
+
+### linux
+
+Move `config` to `$HOME/.config/cligen`
+
+### windows
+
+Move `config` to `$APPDATA\.config\cligen`
+
 ## License
 
 MIT
